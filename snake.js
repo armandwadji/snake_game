@@ -9,6 +9,9 @@ window.onload = () => {
     let apple;
     let delay = 100;
     let score = 0;
+    //_BUTTONS
+    let isPaused = false;
+    let pauseButton = document.getElementById("pauseBtn");
 
     //Apple constructor
     init();
@@ -70,29 +73,31 @@ window.onload = () => {
 
     // Create a function that moove the snake
     function mooveSnake() {
-        const head = [...snakee.body[0]]; // Copy the head's position
-        switch (snakee.direction) {
-            case "up":
-                head[1] -= 1;
-                break;
-            case "down":
-                head[1] += 1;
-                break;
-            case "left":
-                head[0] -= 1;
-                break;
-            case "right":
-                head[0] += 1;
-                break;
-        }
+        if (!isPaused) {
+            const head = [...snakee.body[0]]; // Copy the head's position
+            switch (snakee.direction) {
+                case "up":
+                    head[1] -= 1;
+                    break;
+                case "down":
+                    head[1] += 1;
+                    break;
+                case "left":
+                    head[0] -= 1;
+                    break;
+                case "right":
+                    head[0] += 1;
+                    break;
+            }
 
-        snakee.body.unshift(head); // Add the new head
-        if (!snakee.ateApple) {
-            snakee.body.pop(); // Remove the tail if not eating an apple
+            snakee.body.unshift(head); // Add the new head
+            if (!snakee.ateApple) {
+                snakee.body.pop(); // Remove the tail if not eating an apple
+            }
+            refreshCanvas();
+            console.log(snakee.body);
+            isTouchingWall(head);
         }
-        refreshCanvas();
-        console.log(snakee.body);
-        isTouchingWall(head);
     }
 
 
@@ -137,6 +142,18 @@ window.onload = () => {
         snakee.direction = newDirection;
         console.log(snakee.direction);
     });
+
+    // interupt mooveSnake()
+    function pause() {
+        isPaused = true;
+        console.log("game is paused...");
+    }
+
+    // add pause() on pausButton
+    pauseButton.addEventListener("click", (event) => {
+        pause();
+      }
+    );
 
     function showScore(score) {
         const scoreText = document.getElementsByClassName('score-value');
