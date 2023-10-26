@@ -7,6 +7,7 @@ window.onload = () => {
     const blockSize = 10;
     let snakee;
     let delay = 100;
+    let score = 0;
 
     init();
 
@@ -64,8 +65,26 @@ window.onload = () => {
 
     // Create a function that moove the snake
     function mooveSnake() {
-        if (canMove == true) {
-            const head = [...snakee.body[0]]; // Copy the head's position
+        const head = [...snakee.body[0]]; // Copy the head's position
+        switch (snakee.direction) {
+            case "up":
+                head[1] -= 1;
+                break;
+            case "down":
+                head[1] += 1;
+                break;
+            case "left":
+                head[0] -= 1;
+                break;
+            case "right":
+                head[0] += 1;
+                break;
+        }
+
+        snakee.body.unshift(head); // Add the new head
+        if (!snakee.ateApple) {
+            snakee.body.pop(); // Remove the tail if not eating an apple
+        }
 
             switch (snakee.direction) {
                 case "up":
@@ -132,4 +151,11 @@ window.onload = () => {
         snakee.direction = newDirection;
         console.log(snakee.direction);
     });
+
+    function showScore(score) {
+        const scoreText = document.getElementsByClassName('score-value');
+        Array.from(scoreText).forEach((element) => {
+            element.innerHTML = score;
+        });
+    }
 }

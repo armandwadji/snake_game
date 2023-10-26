@@ -10,14 +10,22 @@
 <body>
 <header>
     <h1>Snake</h1>
+    <p>Votre score actuel est de : <span class="score-value">0</span></p>
 </header>
 <div class="container">
     <div class="buttons">
         <button class="btn">Pause</button>
-        <button class="btn">Stop</button>
+        <button class="btn" onclick="document.getElementById('modal').style.display = 'block'">Stop</button>
         <button class="btn">Relancer</button>
     </div>
 </div>
+    <div class="pop-up card" id="modal">
+        <h2 class="score-title">Fin de la partie !</h2>
+        <p class="score">Votre score est de : <span class="score-value">0</span></p>
+        <div class="card-btn">
+            <button class="btn btn-long" onclick="document.getElementById('modal').style.display = 'none'">Relancer une partie</button>
+        </div>
+    </div>
 
 </body>
 </html>
