@@ -1,8 +1,10 @@
 window.onload = () => {
-    const canvasWidth = setDimension(900);
-    const canvasHeight = setDimension(600);
+
+    const canvasWidth = 900;
+    const canvasHeight = 600;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
+    const modal = document.getElementById('modal');
     const snakeColor = "red";
     const blockSize = 10;
     let snakee;
@@ -23,11 +25,18 @@ window.onload = () => {
         canvas.height = canvasHeight;
         document.body.appendChild(canvas);
         snakee = new Snake([
+            [10, 4],
+            [9, 4],
+            [8, 4],
+            [7, 4],
             [6, 4],
             [5, 4],
-            [4, 4]
-        ], "right" ); 
-        apple = new Apple( blockSize, canvasWidth, canvasHeight, ctx, snakee.body );  
+            [4, 4],
+            [3, 4],
+            [2, 4],
+            [1, 4],
+        ], "right");
+        apple = new Apple(blockSize, canvasWidth, canvasHeight, ctx, snakee.body);
     }
 
     // Create a function that create snake body
@@ -49,24 +58,33 @@ window.onload = () => {
     }
 
     /**
-     * @param dimension integer
-     * @returns integer
-     */
-    function setDimension(dimension) {
-        return dimension + 10;
-    }
-
-    /**
      * @description checking if head position is out of the game area
      * @param headPosition [x, y]
      */
     function isTouchingWall(headPosition) {
-        headX = headPosition[0];
-        headY = headPosition[1];
-        if (headX < 0 || headX >= (canvasWidth / 10) || headY < 0 || headY >= (canvasHeight / 10)) {
-            console.log("Snake touch wall ..!");
+        const headX = headPosition[0];
+        const headY = headPosition[1];
+        if (headX < 0 || headX >= (canvasWidth / blockSize) || headY < 0 || headY >= (canvasHeight / blockSize)) {
+            gameOver("Snake touch the wall ..!");
             clearInterval(timeInterval);
             return true;
+        }
+        return false;
+    }
+
+    /**
+     * @description checking if the snake is touching itself
+     * @param headPosition [x, y]
+     */
+    function isTouchingItself(headPosition) {
+        const headX = headPosition[0];
+        const headY = headPosition[1];
+        for (let i = 1; i < snakee.body.length; i++) {
+            if (headX === snakee.body[i][0] && headY === snakee.body[i][1]) {
+                gameOver("Snake touch itself ..!");
+                clearInterval(timeInterval);
+                return true;
+            }
         }
         return false;
     }
@@ -98,6 +116,9 @@ window.onload = () => {
             console.log(snakee.body);
             isTouchingWall(head);
         }
+        refreshCanvas();
+        isTouchingWall(head);
+        isTouchingItself(head);
     }
 
 
@@ -140,7 +161,6 @@ window.onload = () => {
             newDirection = snakee.direction;
         }
         snakee.direction = newDirection;
-        console.log(snakee.direction);
     });
 
     // interupt mooveSnake()
@@ -160,5 +180,15 @@ window.onload = () => {
         Array.from(scoreText).forEach((element) => {
             element.innerHTML = score;
         });
+    }
+
+    /**
+     *
+     * @param death <string>
+     */
+    function gameOver(death) {
+        const modalDeath = document.getElementById('death');
+        modalDeath.innerText = death;
+        modal.style.display = "block";
     }
 }
