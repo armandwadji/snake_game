@@ -6,12 +6,14 @@ window.onload = () => {
     const snakeColor = "red";
     const blockSize = 10;
     let snakee;
+    let apple;
     let delay = 100;
 
+    //Apple constructor
     init();
-
+    
     setInterval(mooveSnake, delay);
-
+    
     function init() {
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
@@ -20,7 +22,8 @@ window.onload = () => {
             [6, 4],
             [5, 4],
             [4, 4]
-        ], "right");
+        ], "right" ); 
+        apple = new Apple( blockSize, canvasWidth, canvasHeight, ctx, snakee.body );  
     }
 
     // Create a function that create snake body
@@ -64,7 +67,6 @@ window.onload = () => {
         }
 
         refreshCanvas();
-        console.log(snakee.body);
     }
 
     // refresh canvas
@@ -73,6 +75,7 @@ window.onload = () => {
         for (let i = 0; i < snakee.body.length; i++) {
             drawSnake(ctx, snakee.body[i]);
         }
+        apple.show();
     }
 
     // Create the new direction on keypress
