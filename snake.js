@@ -7,6 +7,7 @@ window.onload = () => {
     const blockSize = 10;
     let snakee;
     let delay = 100;
+    let score = 0;
 
     init();
 
@@ -58,6 +59,7 @@ window.onload = () => {
                 head[0] += 1;
                 break;
         }
+
         snakee.body.unshift(head); // Add the new head
         if (!snakee.ateApple) {
             snakee.body.pop(); // Remove the tail if not eating an apple
@@ -107,4 +109,11 @@ window.onload = () => {
         snakee.direction = newDirection;
         console.log(snakee.direction);
     });
+
+    function showScore(score) {
+        const scoreText = document.getElementsByClassName('score-value');
+        Array.from(scoreText).forEach((element) => {
+            element.innerHTML = score;
+        });
+    }
 }
