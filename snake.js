@@ -10,7 +10,7 @@ window.onload = () => {
 
     init();
 
-    // setInterval(mooveSnake, delay);
+    setInterval(mooveSnake, delay);
 
     function init() {
         canvas.width = canvasWidth;
@@ -43,18 +43,36 @@ window.onload = () => {
 
     // Create a function that moove the snake
     function mooveSnake() {
-        snakee.body = ([[snakee.body[0][0] + 1, snakee.body[0][1]]]).concat(snakee.body);
-        for (let i = 0; i < snakee.body.length; i++) {
-            drawSnake(ctx, snakee.body[i]);
+        const head = [...snakee.body[0]]; // Copy the head's position
+        switch (snakee.direction) {
+            case "up":
+                head[1] -= 1;
+                break;
+            case "down":
+                head[1] += 1;
+                break;
+            case "left":
+                head[0] -= 1;
+                break;
+            case "right":
+                head[0] += 1;
+                break;
         }
-        // refreshCanvas();
+        snakee.body.unshift(head); // Add the new head
+        if (!snakee.ateApple) {
+            snakee.body.pop(); // Remove the tail if not eating an apple
+        }
+
+        refreshCanvas();
         console.log(snakee.body);
     }
 
     // refresh canvas
     function refreshCanvas() {
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-        drawSnake();
+        for (let i = 0; i < snakee.body.length; i++) {
+            drawSnake(ctx, snakee.body[i]);
+        }
     }
 
     // Create the new direction on keypress
@@ -83,6 +101,8 @@ window.onload = () => {
             } else if (snakee.direction === 'up') {
                 newDirection = 'right';
             }
+        } else {
+            newDirection = snakee.direction;
         }
         snakee.direction = newDirection;
         console.log(snakee.direction);
