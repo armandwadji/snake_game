@@ -168,10 +168,20 @@ window.onload = () => {
         isPaused = true;
         console.log("game is paused...");
     }
-
-    // add pause() on pausButton
+    // resume mooveSnake()
+    function resume() {
+        isPaused = false;
+        console.log("Let's GO !!!!!!");
+    }
+    // add pause() and resume() on pauseButton
     pauseButton.addEventListener("click", (event) => {
-        pause();
+        if( isPaused == true ){
+            resume();
+            pauseButton.innerHTML = "Pause"
+        } else {
+            pause();
+            pauseButton.innerHTML = "Play"
+        }
       }
     );
 
