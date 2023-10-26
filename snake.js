@@ -41,21 +41,23 @@ window.onload = () => {
         // ctx.fillRect(x, y, width, height);
         ctx.fillRect(position[0] * blockSize, position[1] * blockSize, blockSize, blockSize);
     }
-        /**
+
+    /**
      * @param dimension integer
      * @returns integer
      */
-    function setDimension(dimension){
-        return dimension + 10 ;
+    function setDimension(dimension) {
+        return dimension + 10;
     }
+
     /**
      * @description checking if head position is out of the game area
      * @param headPosition [x, y]
      */
-    function isTouchingWall(headPosition){
+    function isTouchingWall(headPosition) {
         headX = headPosition[0];
         headY = headPosition[1];
-        if ( headX < 0 || headX >= (canvasWidth / 10) || headY < 0 || headY >= (canvasHeight / 10)  ){
+        if (headX < 0 || headX >= (canvasWidth / 10) || headY < 0 || headY >= (canvasHeight / 10)) {
             console.log("Snake touch wall ..!");
             clearInterval(timeInterval);
             return true;
@@ -85,31 +87,11 @@ window.onload = () => {
         if (!snakee.ateApple) {
             snakee.body.pop(); // Remove the tail if not eating an apple
         }
-
-            switch (snakee.direction) {
-                case "up":
-                    head[1] -= 1;
-                    break;
-                case "down":
-                    head[1] += 1;
-                    break;
-                case "left":
-                    head[0] -= 1;
-                    break;
-                case "right":
-                    head[0] += 1;
-                    break;
-            }
-            snakee.body.unshift(head); // Add the new head
-            if (!snakee.ateApple) {
-                snakee.body.pop(); // Remove the tail if not eating an apple
-            }
-    
-            refreshCanvas();
-            console.log(snakee.body);
-            isTouchingWall(head);
-        }
+        refreshCanvas();
+        console.log(snakee.body);
+        isTouchingWall(head);
     }
+
 
     // refresh canvas
     function refreshCanvas() {
