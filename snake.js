@@ -91,8 +91,8 @@ window.onload = () => {
 
     // Create a function that moove the snake
     function mooveSnake() {
+        const head = [...snakee.body[0]]; // Copy the head's position
         if (!isPaused) {
-            const head = [...snakee.body[0]]; // Copy the head's position
             switch (snakee.direction) {
                 case "up":
                     head[1] -= 1;
