@@ -4,6 +4,7 @@ window.onload = () => {
     const canvasHeight = 600;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
+    const modal = document.getElementById('modal');
     const snakeColor = "red";
     const blockSize = 10;
     let snakee;
@@ -31,15 +32,14 @@ window.onload = () => {
             [3, 4],
             [2, 4],
             [1, 4],
-        ], "right" );
-        apple = new Apple( blockSize, canvasWidth, canvasHeight, ctx, snakee.body );  
+        ], "right");
+        apple = new Apple(blockSize, canvasWidth, canvasHeight, ctx, snakee.body);
     }
 
     // Create a function that create snake body
     // This snake has direction to know where he goes
     function Snake(body, direction) {
         this.body = body;
-
         this.direction = direction;
         this.ateApple = false;
         for (let i = 0; i < body.length; i++) {
@@ -55,14 +55,6 @@ window.onload = () => {
     }
 
     /**
-     * @param dimension integer
-     * @returns integer
-     */
-    // function setDimension(dimension) {
-    //     return dimension + 10;
-    // }
-
-    /**
      * @description checking if head position is out of the game area
      * @param headPosition [x, y]
      */
@@ -70,7 +62,7 @@ window.onload = () => {
         const headX = headPosition[0];
         const headY = headPosition[1];
         if (headX < 0 || headX >= (canvasWidth / blockSize) || headY < 0 || headY >= (canvasHeight / blockSize)) {
-            window.alert("Snake touch wall ..!");
+            gameOver("Snake touch the wall ..!");
             clearInterval(timeInterval);
             return true;
         }
@@ -86,7 +78,7 @@ window.onload = () => {
         const headY = headPosition[1];
         for (let i = 1; i < snakee.body.length; i++) {
             if (headX === snakee.body[i][0] && headY === snakee.body[i][1]) {
-                window.alert("Snake touch itself ..!");
+                gameOver("Snake touch itself ..!");
                 clearInterval(timeInterval);
                 return true;
             }
@@ -168,5 +160,15 @@ window.onload = () => {
         Array.from(scoreText).forEach((element) => {
             element.innerHTML = score;
         });
+    }
+
+    /**
+     *
+     * @param death <string>
+     */
+    function gameOver(death) {
+        const modalDeath = document.getElementById('death');
+        modalDeath.innerText = death;
+        modal.style.display = "block";
     }
 }
