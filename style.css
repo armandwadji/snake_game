@@ -69,3 +69,16 @@ p {
 #modal {
     display: none;
 }
+
+.logo {
+    width: 4%;
+    max-height: 100%;
+}
+
+.header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
