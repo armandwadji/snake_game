@@ -1,25 +1,60 @@
 window.onload = () => {
-    const canvasWidth = setDimension(900);
-    const canvasHeight = setDimension(600);
+
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    const snakeColor = "red";
-    const blockSize = 10;
+    const modal = document.getElementById('modal');
+    let snakeColor;
+    let blockSize;
+    let canvasWidth;
+    let canvasHeight;
+    let config;
     let snakee;
     let apples;
     let delay = 100;
     let score = 0;
+    //_BUTTONS
+    let isPaused = false;
+    let pauseButton = document.getElementById("pauseBtn");
+    let relaunchButton = document.getElementById("relaunchBtn");
 
-    //Apple constructor
-    init();
+    // Get the config.json file
+    loadConfig('conf.json', () => {
+        init();
+    })
+
+    /**
+     * 
+     * @param {*} url get the config.json file
+     * @param {*} callback
+     */
+    function loadConfig(url, callback) {
+        const request = new XMLHttpRequest();
+        request.open('GET', url, true);
+        request.onreadystatechange = () => {
+            if (request.readyState === 4 && request.status === 200) {
+                config = JSON.parse(request.responseText);
+                callback();
+            }
+        };
+        request.send(null);
+    }
 
     let timeInterval = setInterval(mooveSnake, delay);
 
     function init() {
+        canvasWidth = config.canvasWidth;
+        canvasHeight = config.canvasHeight;
+        blockSize = config.blockSize;
+        snakeColor = config.snakeColor;
+
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
         document.body.appendChild(canvas);
         snakee = new Snake([
+            [10, 4],
+            [9, 4],
+            [8, 4],
+            [7, 4],
             [6, 4],
             [5, 4],
             [4, 4]
@@ -47,24 +82,33 @@ window.onload = () => {
     }
 
     /**
-     * @param dimension integer
-     * @returns integer
-     */
-    function setDimension(dimension) {
-        return dimension + 10;
-    }
-
-    /**
      * @description checking if head position is out of the game area
      * @param headPosition [x, y]
      */
     function isTouchingWall(headPosition) {
-        headX = headPosition[0];
-        headY = headPosition[1];
-        if (headX < 0 || headX >= (canvasWidth / 10) || headY < 0 || headY >= (canvasHeight / 10)) {
-            console.log("Snake touch wall ..!");
+        const headX = headPosition[0];
+        const headY = headPosition[1];
+        if (headX < 0 || headX >= (canvasWidth / blockSize) || headY < 0 || headY >= (canvasHeight / blockSize)) {
+            gameOver("Snake touch the wall ..!");
             clearInterval(timeInterval);
             return true;
+        }
+        return false;
+    }
+
+    /**
+     * @description checking if the snake is touching itself
+     * @param headPosition [x, y]
+     */
+    function isTouchingItself(headPosition) {
+        const headX = headPosition[0];
+        const headY = headPosition[1];
+        for (let i = 1; i < snakee.body.length; i++) {
+            if (headX === snakee.body[i][0] && headY === snakee.body[i][1]) {
+                gameOver("Snake touch itself ..!");
+                clearInterval(timeInterval);
+                return true;
+            }
         }
         return false;
     }
@@ -72,28 +116,32 @@ window.onload = () => {
     // Create a function that moove the snake
     function mooveSnake() {
         const head = [...snakee.body[0]]; // Copy the head's position
-        switch (snakee.direction) {
-            case "up":
-                head[1] -= 1;
-                break;
-            case "down":
-                head[1] += 1;
-                break;
-            case "left":
-                head[0] -= 1;
-                break;
-            case "right":
-                head[0] += 1;
-                break;
-        }
+        if (!isPaused) {
+            switch (snakee.direction) {
+                case "up":
+                    head[1] -= 1;
+                    break;
+                case "down":
+                    head[1] += 1;
+                    break;
+                case "left":
+                    head[0] -= 1;
+                    break;
+                case "right":
+                    head[0] += 1;
+                    break;
+            }
 
-        snakee.body.unshift(head); // Add the new head
-        if (!snakee.ateApple) {
-            snakee.body.pop(); // Remove the tail if not eating an apple
+            snakee.body.unshift(head); // Add the new head
+            if (!snakee.ateApple) {
+                snakee.body.pop(); // Remove the tail if not eating an apple
+            }
+            refreshCanvas();
+            isTouchingWall(head);
         }
         refreshCanvas();
-        // console.log(snakee.body);
         isTouchingWall(head);
+        isTouchingItself(head);
     }
 
 
@@ -136,13 +184,62 @@ window.onload = () => {
             newDirection = snakee.direction;
         }
         snakee.direction = newDirection;
-        // console.log(snakee.direction);
     });
 
+    // interupt mooveSnake()
+    function pause() {
+        isPaused = true;
+    }
+    // resume mooveSnake()
+    function resume() {
+        isPaused = false;
+    }
+    // resume mooveSnake()
+    function togglePause() {
+        if( isPaused == true ){
+            resume();
+            pauseButton.innerHTML = "Pause"
+        } else {
+            pause();
+            pauseButton.innerHTML = "Play"
+        }
+    }
+    // add pause() and resume() on pauseButton
+    pauseButton.addEventListener("click", (event) => {
+        togglePause();
+      }
+    );
+    // resume mooveSnake()
+    function relaunch() {
+        //disable switch to play if relaunch while paused.
+        if( isPaused == true ){
+            togglePause();
+        }
+        // Can be optimized
+        clearInterval(timeInterval);
+        timeInterval = setInterval(mooveSnake, delay);
+        // Can be optimized
+        init();
+    }
+    // add pause() and resume() on pauseButton
+    relaunchButton.addEventListener("click", (event) => {
+        relaunch();
+        }
+    );
     function showScore(score) {
         const scoreText = document.getElementsByClassName('score-value');
         Array.from(scoreText).forEach((element) => {
             element.innerHTML = score;
         });
+    }
+
+    /**
+     *
+     * @param death <string>
+     */
+    function gameOver(death) {
+        const modalDeath = document.getElementById('death');
+        modalDeath.innerText = death;
+        modal.style.display = "block";
     }
 }
