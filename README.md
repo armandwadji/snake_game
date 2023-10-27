@@ -29,6 +29,9 @@ git clone https://gitlab.cefim-formation.org/Alexane/snake.git
 
 Puis lancer le fichier index.html
 
+## Règles du jeux
+Le serpent change de direction (Gauche / Droite) selon son sens de déplacement grâce aux touches gauche droite du clavier.
+
 <p align="right">Back to top :
   <a href="#top">
     ☝
