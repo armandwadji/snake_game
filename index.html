@@ -16,20 +16,19 @@
     <p>Votre score actuel est de : <span class="score-value">0</span></p>
 </header>
 <div class="container">
-    <div class="buttons">
+    <div id="btnBar" class="buttons">
         <button class="btn" id="pauseBtn">Pause</button>
         <button class="btn" onclick="document.getElementById('modal').style.display = 'block'">Stop</button>
         <button class="btn btn-long" id="relaunchBtn">Play again!</button>
     </div>
-</div>
     <div class="pop-up card" id="modal">
         <h2 class="score-title">End of the game!</h2>
         <p id="death"></p>
         <p class="score">Your score : <span class="score-value">0</span></p>
         <div class="card-btn">
-            <button class="btn btn-long" onclick="document.getElementById('modal').style.display = 'none'">Play again!</button>
+            <button class="btn btn-long" id="playAgainBtn">Play again!</button>
         </div>
     </div>
-
+</div>
 </body>
 </html>
