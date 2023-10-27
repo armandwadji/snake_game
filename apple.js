@@ -3,12 +3,13 @@ class Apple {
   _y;
   _eat = false;
 
-  constructor(blockSize, canvasWidth, canvasHeight, ctx, snakeBody) {
+  constructor(blockSize, canvasWidth, canvasHeight, ctx, snakeBody, isPaused) {
     this.size = blockSize;
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
     this.ctx = ctx;
     this.snakeBody = snakeBody;
+    this.isPaused = isPaused;
 
     this.setRandomPosition();
   }
@@ -78,12 +79,20 @@ class Apple {
    * remove the apple after X seconds
    */
   appleHidden() {
-    setTimeout(() => {
+    return setTimeout(() => {
       if (this.eat) return;
 
-      this.eat = true;
-      this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-    }, 10000);
+      if ( !this.isPaused ) {
+        this.eat = true;
+        this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+      } else {
+        this.appleHidden();
+      }
+    }, 5000);
+  }
+
+  appleFreeze(isPause) {
+    ret;
   }
 
   getX() {
@@ -94,5 +103,8 @@ class Apple {
   }
   getEat() {
     return this.eat;
+  }
+  setIsPaused(isPaused) {
+    this.isPaused = isPaused;
   }
 }
