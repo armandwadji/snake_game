@@ -60,7 +60,7 @@ window.onload = () => {
             [4, 4]
         ], "right" ); 
 
-        apples = new Apples( blockSize, canvasWidth, canvasHeight, ctx, snakee.body );   
+        apples = new Apples( blockSize, canvasWidth, canvasHeight, ctx, snakee.body, isPaused );   
     }
 
     // Create a function that create snake body
@@ -115,8 +115,9 @@ window.onload = () => {
 
     // Create a function that moove the snake
     function mooveSnake() {
-        const head = [...snakee.body[0]]; // Copy the head's position
-        if (!isPaused) {
+        const head = [ ...snakee.body[ 0 ] ];
+        // Copy the head's position
+        if ( !isPaused ) {
             switch (snakee.direction) {
                 case "up":
                     head[1] -= 1;
@@ -191,6 +192,11 @@ window.onload = () => {
         isPaused = !isPaused;
         const buttonText = isPaused ? "Play" : "Pause";
         pauseButton.innerHTML = buttonText;
+
+        apples.applesTable.forEach( apple => {
+            // console.log(apple);
+            apple.setIsPaused(isPaused);
+        } );
     }
     // add pause() and resume() on pauseButton
     pauseButton.addEventListener("click", togglePause);
@@ -200,7 +206,7 @@ window.onload = () => {
         if (isPaused) {
             togglePause();
         }
-        clearInterval(timeInterval);
+        clearInterval( timeInterval );
         timeInterval = setInterval(mooveSnake, delay);
         init();
     }
