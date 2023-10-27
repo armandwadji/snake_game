@@ -1,6 +1,6 @@
 class Apple {
-  _x;
-  _y;
+  x;
+  y;
   _eat = false;
 
   constructor(blockSize, canvasWidth, canvasHeight, ctx, snakeBody, isPaused) {
@@ -70,8 +70,8 @@ class Apple {
   appleEat() {
     const [headX, headY] = this.snakeBody[0];
     if (headX === this.x && headY === this.y) {
-      this.eat = true;
-      this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+      this._eat = true;
+      // this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     }
   }
 
@@ -80,19 +80,15 @@ class Apple {
    */
   appleHidden() {
     return setTimeout(() => {
-      if (this.eat) return;
+      if (this._eat) return;
 
       if ( !this.isPaused ) {
-        this.eat = true;
-        this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+        this._eat = true;
+        // this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
       } else {
         this.appleHidden();
       }
-    }, 5000);
-  }
-
-  appleFreeze(isPause) {
-    ret;
+    }, 500000);
   }
 
   getX() {
@@ -102,7 +98,7 @@ class Apple {
     return this.y;
   }
   getEat() {
-    return this.eat;
+    return this._eat;
   }
   setIsPaused(isPaused) {
     this.isPaused = isPaused;
