@@ -14,7 +14,7 @@ window.onload = () => {
     let score;
     let applePts;
     //_BUTTONS
-    let isPaused = false;
+    let isPaused = true;
     let deathModal = document.getElementById('modal');
     let buttonsBar = document.getElementById('btnBar');
     let pauseButton = document.getElementById("pauseBtn");
