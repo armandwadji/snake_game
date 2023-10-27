@@ -6,7 +6,7 @@ window.onload = () => {
     const snakeColor = "red";
     const blockSize = 10;
     let snakee;
-    let apple;
+    let apples;
     let delay = 100;
     let score = 0;
 
@@ -24,7 +24,8 @@ window.onload = () => {
             [5, 4],
             [4, 4]
         ], "right" ); 
-        apple = new Apple( blockSize, canvasWidth, canvasHeight, ctx, snakee.body );  
+
+        apples = new Apples( blockSize, canvasWidth, canvasHeight, ctx, snakee.body );   
     }
 
     // Create a function that create snake body
@@ -91,7 +92,7 @@ window.onload = () => {
             snakee.body.pop(); // Remove the tail if not eating an apple
         }
         refreshCanvas();
-        console.log(snakee.body);
+        // console.log(snakee.body);
         isTouchingWall(head);
     }
 
@@ -102,7 +103,7 @@ window.onload = () => {
         for (let i = 0; i < snakee.body.length; i++) {
             drawSnake(ctx, snakee.body[i]);
         }
-        apple.show();
+        apples.show();
     }
 
     // Create the new direction on keypress
@@ -135,7 +136,7 @@ window.onload = () => {
             newDirection = snakee.direction;
         }
         snakee.direction = newDirection;
-        console.log(snakee.direction);
+        // console.log(snakee.direction);
     });
 
     function showScore(score) {
