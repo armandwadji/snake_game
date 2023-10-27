@@ -14,8 +14,11 @@ window.onload = () => {
     let score = 0;
     //_BUTTONS
     let isPaused = false;
+    let deathModal = document.getElementById('modal');
+    let buttonsBar = document.getElementById('btnBar');
     let pauseButton = document.getElementById("pauseBtn");
     let relaunchButton = document.getElementById("relaunchBtn");
+    let playAgainButton = document.getElementById("playAgainBtn");
 
     // Get the config.json file
     loadConfig('conf.json', () => {
@@ -206,7 +209,13 @@ window.onload = () => {
     }
     // add event on relaunchButton
     relaunchButton.addEventListener("click", relaunch);
-
+    // Create a function to relaunch the game
+    function playAgain() {
+        relaunch();
+        deathModal.style.display = 'none';
+        buttonsBar.style.display = 'flex';
+    }
+    playAgainButton.addEventListener("click", playAgain);
     function showScore(score) {
         const scoreText = document.getElementsByClassName('score-value');
         Array.from(scoreText).forEach((element) => {
@@ -222,5 +231,6 @@ window.onload = () => {
         const modalDeath = document.getElementById('death');
         modalDeath.innerText = death;
         modal.style.display = "block";
+        buttonsBar.style.display = 'none';
     }
 }
