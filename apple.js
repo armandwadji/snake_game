@@ -88,7 +88,7 @@ class Apple {
       } else {
         this.appleHidden();
       }
-    }, 500000);
+    }, 10000);
   }
 
   getX() {
