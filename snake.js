@@ -12,6 +12,7 @@ window.onload = () => {
     let apples;
     let delay = 100;
     let score;
+    let applePts;
     //_BUTTONS
     let isPaused = false;
     let deathModal = document.getElementById('modal');
@@ -50,8 +51,8 @@ window.onload = () => {
         canvasHeight = config.canvasHeight;
         blockSize = config.blockSize;
         snakeColor = config.snakeColor;
+        applePts = config.applePts;
         score = 0;
-        console.log(score);
 
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
@@ -126,7 +127,7 @@ window.onload = () => {
         apples.applesTable.forEach( apple => {
             if (headX === apple.getX() && headY === apple.getY()) {
                 snakee.ateApple = true;
-                score++;
+                score += applePts;
                 if (score % 5 == 0) {
                     delay -= 10;
                     clearInterval(timeInterval);
