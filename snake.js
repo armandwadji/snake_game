@@ -15,6 +15,7 @@ window.onload = () => {
     //_BUTTONS
     let isPaused = false;
     let pauseButton = document.getElementById("pauseBtn");
+    let relaunchButton = document.getElementById("relaunchBtn");
 
     // Get the config.json file
     loadConfig('conf.json', () => {
@@ -195,8 +196,8 @@ window.onload = () => {
     function resume() {
         isPaused = false;
     }
-    // add pause() and resume() on pauseButton
-    pauseButton.addEventListener("click", (event) => {
+    // resume mooveSnake()
+    function togglePause() {
         if( isPaused == true ){
             resume();
             pauseButton.innerHTML = "Pause"
@@ -204,9 +205,29 @@ window.onload = () => {
             pause();
             pauseButton.innerHTML = "Play"
         }
+    }
+    // add pause() and resume() on pauseButton
+    pauseButton.addEventListener("click", (event) => {
+        togglePause();
       }
     );
-
+    // resume mooveSnake()
+    function relaunch() {
+        //disable switch to play if relaunch while paused.
+        if( isPaused == true ){
+            togglePause();
+        }
+        // Can be optimized
+        clearInterval(timeInterval);
+        timeInterval = setInterval(mooveSnake, delay);
+        // Can be optimized
+        init();
+    }
+    // add pause() and resume() on pauseButton
+    relaunchButton.addEventListener("click", (event) => {
+        relaunch();
+        }
+    );
     function showScore(score) {
         const scoreText = document.getElementsByClassName('score-value');
         Array.from(scoreText).forEach((element) => {
