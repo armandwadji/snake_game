@@ -186,46 +186,27 @@ window.onload = () => {
         snakee.direction = newDirection;
     });
 
-    // interupt mooveSnake()
-    function pause() {
-        isPaused = true;
-    }
-    // resume mooveSnake()
-    function resume() {
-        isPaused = false;
-    }
-    // resume mooveSnake()
+    // Create a function to make a break or resume the game
     function togglePause() {
-        if( isPaused == true ){
-            resume();
-            pauseButton.innerHTML = "Pause"
-        } else {
-            pause();
-            pauseButton.innerHTML = "Play"
-        }
+        isPaused = !isPaused;
+        const buttonText = isPaused ? "Play" : "Pause";
+        pauseButton.innerHTML = buttonText;
     }
     // add pause() and resume() on pauseButton
-    pauseButton.addEventListener("click", (event) => {
-        togglePause();
-      }
-    );
-    // resume mooveSnake()
+    pauseButton.addEventListener("click", togglePause);
+
+    // Create a function to relaunch the game
     function relaunch() {
-        //disable switch to play if relaunch while paused.
-        if( isPaused == true ){
+        if (isPaused) {
             togglePause();
         }
-        // Can be optimized
         clearInterval(timeInterval);
         timeInterval = setInterval(mooveSnake, delay);
-        // Can be optimized
         init();
     }
-    // add pause() and resume() on pauseButton
-    relaunchButton.addEventListener("click", (event) => {
-        relaunch();
-        }
-    );
+    // add event on relaunchButton
+    relaunchButton.addEventListener("click", relaunch);
+
     function showScore(score) {
         const scoreText = document.getElementsByClassName('score-value');
         Array.from(scoreText).forEach((element) => {
