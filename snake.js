@@ -122,13 +122,12 @@ window.onload = () => {
         const headX = headPosition[0];
         const headY = headPosition[1];
 
-        apples.applesTable.forEach((apple) => {
-            if (headX === apple.getX() && headY === apple.getY() && apple.getEat()) {
+        apples.applesTable.forEach( apple => {
+            if (headX === apple.getX() && headY === apple.getY()) {
                 snakee.ateApple = true;
                 score++;
-                console.log(apple);
             }
-        });
+        } );
     }
 
     // Create a function that moove the snake
@@ -152,6 +151,8 @@ window.onload = () => {
             }
 
             snakee.body.unshift(head); // Add the new head
+            isTouchingApple(head);
+
             if (!snakee.ateApple) {
                 snakee.body.pop(); // Remove the tail if not eating an apple
             } else {
@@ -159,9 +160,7 @@ window.onload = () => {
             }
             refreshCanvas();
             isTouchingWall(head);
-            isTouchingWall(head);
             isTouchingItself(head);
-            isTouchingApple(head);
         }
         refreshCanvas();
         showScore(score);

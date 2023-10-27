@@ -71,7 +71,7 @@ class Apple {
     const [headX, headY] = this.snakeBody[0];
     if (headX === this.x && headY === this.y) {
       this._eat = true;
-      // this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+      this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     }
   }
 
@@ -84,7 +84,7 @@ class Apple {
 
       if ( !this.isPaused ) {
         this._eat = true;
-        // this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+        this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
       } else {
         this.appleHidden();
       }
