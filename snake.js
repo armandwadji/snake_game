@@ -19,6 +19,7 @@ window.onload = () => {
     let pauseButton = document.getElementById("pauseBtn");
     let relaunchButton = document.getElementById("relaunchBtn");
     let playAgainButton = document.getElementById("playAgainBtn");
+    const stopBtn = document.getElementById('stopBtn');
 
     // Get the config.json file
     loadConfig('conf.json', () => {
@@ -246,6 +247,10 @@ window.onload = () => {
             element.innerHTML = score;
         });
     }
+    stopBtn.addEventListener('click', () => {
+        clearInterval(timeInterval);
+        gameOver('Game stopped');
+    });
 
     /**
      *
