@@ -5,6 +5,8 @@ class Apples{
     ctx;
     snakeBody;
     applesTable = [];
+    firstApple;
+    secondApple;
     isPaused;
 
     constructor ( blockSize, canvasWidth, canvasHeight, ctx, snakeBody, isPaused ) {
@@ -39,13 +41,8 @@ class Apples{
     }
 
     applesEat () {
-        const [ firstApple, secondApple ] = this.applesTable;
-
-        if ( firstApple.getEat() && secondApple.getEat() ) { 
+        if ( this.firstApple.getEat() && this.secondApple.getEat() ) {
             this.createApples();
         }
-        // else {
-        //     console.log("wait");
-        // }
     }
 }

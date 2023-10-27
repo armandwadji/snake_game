@@ -11,7 +11,7 @@ window.onload = () => {
     let snakee;
     let apples;
     let delay = 100;
-    let score = 0;
+    let score;
     //_BUTTONS
     let isPaused = false;
     let deathModal = document.getElementById('modal');
@@ -49,6 +49,8 @@ window.onload = () => {
         canvasHeight = config.canvasHeight;
         blockSize = config.blockSize;
         snakeColor = config.snakeColor;
+        score = 0;
+        console.log(score);
 
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
@@ -56,11 +58,7 @@ window.onload = () => {
         snakee = new Snake([
             [10, 4],
             [9, 4],
-            [8, 4],
-            [7, 4],
-            [6, 4],
-            [5, 4],
-            [4, 4]
+            [8, 4]
         ], "right" ); 
 
         apples = new Apples( blockSize, canvasWidth, canvasHeight, ctx, snakee.body, isPaused );   
@@ -116,6 +114,22 @@ window.onload = () => {
         return false;
     }
 
+    /**
+     * @description checking if the snake is touching an apple
+     * @param headPosition
+     */
+    function isTouchingApple(headPosition) {
+        const headX = headPosition[0];
+        const headY = headPosition[1];
+
+        apples.applesTable.forEach( apple => {
+            if (headX === apple.getX() && headY === apple.getY()) {
+                snakee.ateApple = true;
+                score++;
+            }
+        } );
+    }
+
     // Create a function that moove the snake
     function mooveSnake() {
         const head = [ ...snakee.body[ 0 ] ];
@@ -137,15 +151,19 @@ window.onload = () => {
             }
 
             snakee.body.unshift(head); // Add the new head
+            isTouchingApple(head);
+
             if (!snakee.ateApple) {
                 snakee.body.pop(); // Remove the tail if not eating an apple
+            } else {
+                snakee.ateApple = false;
             }
             refreshCanvas();
             isTouchingWall(head);
+            isTouchingItself(head);
         }
         refreshCanvas();
-        isTouchingWall(head);
-        isTouchingItself(head);
+        showScore(score);
     }
 
 
