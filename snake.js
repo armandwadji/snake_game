@@ -127,6 +127,11 @@ window.onload = () => {
             if (headX === apple.getX() && headY === apple.getY()) {
                 snakee.ateApple = true;
                 score++;
+                if (score % 5 == 0) {
+                    delay -= 10;
+                    clearInterval(timeInterval);
+                    timeInterval = setInterval(mooveSnake, delay);
+                }
             }
         } );
     }
