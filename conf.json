@@ -3,5 +3,5 @@
     "canvasHeight": 600,
     "blockSize": 10,
     "snakeColor": "red",
-    "applePts": 10
+    "applePts": 1
 }
