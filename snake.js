@@ -1,12 +1,13 @@
 window.onload = () => {
 
-    const canvasWidth = 900;
-    const canvasHeight = 600;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     const modal = document.getElementById('modal');
-    const snakeColor = "red";
-    const blockSize = 10;
+    let snakeColor;
+    let blockSize;
+    let canvasWidth;
+    let canvasHeight;
+    let config;
     let snakee;
     let apple;
     let delay = 100;
@@ -15,12 +16,36 @@ window.onload = () => {
     let isPaused = false;
     let pauseButton = document.getElementById("pauseBtn");
 
-    //Apple constructor
-    init();
+    // Get the config.json file
+    loadConfig('conf.json', () => {
+        init();
+    })
+
+    /**
+     * 
+     * @param {*} url get the config.json file
+     * @param {*} callback
+     */
+    function loadConfig(url, callback) {
+        const request = new XMLHttpRequest();
+        request.open('GET', url, true);
+        request.onreadystatechange = () => {
+            if (request.readyState === 4 && request.status === 200) {
+                config = JSON.parse(request.responseText);
+                callback();
+            }
+        };
+        request.send(null);
+    }
 
     let timeInterval = setInterval(mooveSnake, delay);
 
     function init() {
+        canvasWidth = config.canvasWidth;
+        canvasHeight = config.canvasHeight;
+        blockSize = config.blockSize;
+        snakeColor = config.snakeColor;
+
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
         document.body.appendChild(canvas);
@@ -113,7 +138,6 @@ window.onload = () => {
                 snakee.body.pop(); // Remove the tail if not eating an apple
             }
             refreshCanvas();
-            console.log(snakee.body);
             isTouchingWall(head);
         }
         refreshCanvas();
@@ -166,12 +190,10 @@ window.onload = () => {
     // interupt mooveSnake()
     function pause() {
         isPaused = true;
-        console.log("game is paused...");
     }
     // resume mooveSnake()
     function resume() {
         isPaused = false;
-        console.log("Let's GO !!!!!!");
     }
     // add pause() and resume() on pauseButton
     pauseButton.addEventListener("click", (event) => {
